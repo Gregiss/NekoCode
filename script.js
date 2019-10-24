@@ -65,23 +65,29 @@ var app = new Vue({
         },
         abrir(arq) {
             if (this.abertos.find((aberto) => aberto.name === arq.name)) {
-                return false
+                this.ativo = arq
+                for (var i = 0; i < this.abertos.length; i++) {
+                    this.abertos[i].ativo = false
+                }
+                for (var i = 0; i < this.explorer.length; i++) {
+                    this.explorer[i].ativo = false
+                }
+                this.abertos[arq.id].ativo = true
+                this.explorer[arq.id].ativo = true
             } else {
                 this.abertos.push(arq)
                 this.ativo = arq
                 var index = this.abertos.indexOf(arq)
                 this.ativo.id = index;
                 this.arquivoId = index
-                var index = this.abertos.indexOf(arq)
                 for (var i = 0; i < this.abertos.length; i++) {
                     this.abertos[i].ativo = false
                 }
-                console.log(index)
-                this.abertos[index].ativo = true
+                this.abertos[arq.id].ativo = true
             }
         },
         close(aberto) {
-            var arqa = this.explorer.indexOf(aberto)
+            var arqa = this.abertos.indexOf(aberto)
             console.log(arqa)
             this.explorer[arqa].ativo = false
             var index = this.abertos.indexOf(aberto)
@@ -125,9 +131,11 @@ var app = new Vue({
             for (var i = 0; i < this.abertos.length; i++) {
                 this.abertos[i].ativo = false
             }
-            var index = this.abertos.indexOf(arq)
-            this.abertos[index].ativo = true
-            console.log(index)
+            for (var i = 0; i < this.explorer.length; i++) {
+                this.explorer[i].ativo = false
+            }
+            this.abertos[arq.id].ativo = true
+            this.explorer[arq.id].ativo = true
             this.ativo = arq
             var index = this.abertos.indexOf(arq)
             this.ativo.id = index;
