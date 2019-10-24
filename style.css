@@ -95,7 +95,7 @@ a span {
 }
 
 .center .tabs a {
-    color: #fff;
+    color: #ffffffa8;
     padding: 15px;
     top: 12px;
     position: relative;
@@ -208,4 +208,12 @@ input {
 input,
 button {
     margin: 10px;
+}
+
+.ativo span {
+    color: #fff;
+}
+
+.ativo i {
+    color: #fff;
 }

@@ -19,7 +19,8 @@ var app = new Vue({
         explorer: [{
             'name': "readme",
             "icon": "fab fa-readme",
-            "text": "Seja bem vindo ao NekoCode, NekoCode é um editor de código parecido com Visual Studio Code"
+            "text": "Seja bem vindo ao NekoCode, NekoCode é um editor de código parecido com Visual Studio Code",
+            "ativo": false
         }],
         abertos: [],
         ativo: {},
@@ -47,13 +48,17 @@ var app = new Vue({
         this.explorer = localStorage.explorer ? JSON.parse(localStorage.explorer) : [{
             'name': "readme",
             "icon": "fab fa-readme",
-            "text": "Seja bem vindo ao NekoCode, NekoCode é um editor de código parecido com Visual Studio Code"
+            "text": "Seja bem vindo ao NekoCode, NekoCode é um editor de código parecido com Visual Studio Code",
+            "ativo": false
         }]
+        this.ativo = localStorage.ativo ? JSON.parse(localStorage.ativo) : {}
+        this.abertos = localStorage.abertos ? JSON.parse(localStorage.abertos) : []
     },
     methods: {
         editar(letter) {
             this.ativo.text += letter
             localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
         },
         acessar(app) {
             this.where = app
@@ -67,9 +72,18 @@ var app = new Vue({
                 var index = this.abertos.indexOf(arq)
                 this.ativo.id = index;
                 this.arquivoId = index
+                var index = this.abertos.indexOf(arq)
+                for (var i = 0; i < this.abertos.length; i++) {
+                    this.abertos[i].ativo = false
+                }
+                console.log(index)
+                this.abertos[index].ativo = true
             }
         },
         close(aberto) {
+            var arqa = this.explorer.indexOf(aberto)
+            console.log(arqa)
+            this.explorer[arqa].ativo = false
             var index = this.abertos.indexOf(aberto)
             if (index !== -1) this.abertos.splice(index, 1);
             this.ativo = {}
@@ -82,30 +96,45 @@ var app = new Vue({
             this.modal = true
             localStorage.explorer = JSON.stringify(this.explorer)
             this.newFile = true
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         },
         criarArquivoNovo() {
             if (this.newFileName.length >= 3) {
                 this.explorer.push({
                     'name': this.newFileName,
                     "icon": "fas fa-code",
-                    "text": "Escreve seu código aqui"
+                    "text": "Escreve seu código aqui",
+                    "ativo": false
                 })
                 this.newFile = false
                 this.modal = false
                 localStorage.explorer = JSON.stringify(this.explorer)
+                localStorage.ativo = JSON.stringify(this.ativo)
+                localStorage.abertos = JSON.stringify(this.abertos)
             }
         },
         cancelNewFile() {
             this.newFile = false
             this.modal = false
             localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         },
         openFile(arq) {
+            for (var i = 0; i < this.abertos.length; i++) {
+                this.abertos[i].ativo = false
+            }
+            var index = this.abertos.indexOf(arq)
+            this.abertos[index].ativo = true
+            console.log(index)
             this.ativo = arq
             var index = this.abertos.indexOf(arq)
             this.ativo.id = index;
             this.arquivoId = index
             localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         }
     }
 });
