@@ -26,25 +26,25 @@ var app = new Vue({
         selectAllFunction: false,
         newFile: false,
         newFileName: null,
-        modal: false
+        modal: false,
+        arquivoId: 0
     },
     created() {
         window.addEventListener('keydown', (e) => {
             if (e.key.isABC()) {
-                this.editar(e.key)
+                this.editar(e.key, this.ativo)
             }
             if (e.key == ' ') {
-                this.editar(e.key)
+                this.editar(e.key, this.ativo)
             }
             if (e.key == 'Backspace') {
                 var novotexto = this.ativo.text.substring(0, (this.ativo.text.length - 1));
                 this.ativo.text = novotexto
             }
-
         });
     },
     methods: {
-        editar(letter) {
+        editar(letter, arq) {
             this.ativo.text += letter
         },
         acessar(app) {
@@ -56,6 +56,9 @@ var app = new Vue({
             } else {
                 this.abertos.push(arq)
                 this.ativo = arq
+                var index = this.abertos.indexOf(arq)
+                this.ativo.id = index;
+                this.arquivoId = index
             }
         },
         close(aberto) {
@@ -88,6 +91,9 @@ var app = new Vue({
         },
         openFile(arq) {
             this.ativo = arq
+            var index = this.abertos.indexOf(arq)
+            this.ativo.id = index;
+            this.arquivoId = index
         }
     }
 });
