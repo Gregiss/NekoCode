@@ -32,10 +32,10 @@ var app = new Vue({
     created() {
         window.addEventListener('keydown', (e) => {
             if (e.key.isABC()) {
-                this.editar(e.key, this.ativo)
+                this.editar(e.key)
             }
             if (e.key == ' ') {
-                this.editar(e.key, this.ativo)
+                this.editar(e.key)
             }
             if (e.key == 'Backspace') {
                 var novotexto = this.ativo.text.substring(0, (this.ativo.text.length - 1));
@@ -43,9 +43,17 @@ var app = new Vue({
             }
         });
     },
+    mounted() {
+        this.explorer = localStorage.explorer ? JSON.parse(localStorage.explorer) : [{
+            'name': "readme",
+            "icon": "fab fa-readme",
+            "text": "Seja bem vindo ao NekoCode, NekoCode é um editor de código parecido com Visual Studio Code"
+        }]
+    },
     methods: {
-        editar(letter, arq) {
+        editar(letter) {
             this.ativo.text += letter
+            localStorage.explorer = JSON.stringify(this.explorer)
         },
         acessar(app) {
             this.where = app
@@ -72,28 +80,32 @@ var app = new Vue({
         },
         novoArquivo() {
             this.modal = true
+            localStorage.explorer = JSON.stringify(this.explorer)
             this.newFile = true
         },
         criarArquivoNovo() {
-            if (this.newFileName.length >= 5) {
+            if (this.newFileName.length >= 3) {
                 this.explorer.push({
                     'name': this.newFileName,
                     "icon": "fas fa-code",
-                    "text": ""
+                    "text": "Escreve seu código aqui"
                 })
                 this.newFile = false
                 this.modal = false
+                localStorage.explorer = JSON.stringify(this.explorer)
             }
         },
         cancelNewFile() {
             this.newFile = false
             this.modal = false
+            localStorage.explorer = JSON.stringify(this.explorer)
         },
         openFile(arq) {
             this.ativo = arq
             var index = this.abertos.indexOf(arq)
             this.ativo.id = index;
             this.arquivoId = index
+            localStorage.explorer = JSON.stringify(this.explorer)
         }
     }
 });
