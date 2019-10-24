@@ -83,7 +83,11 @@ var app = new Vue({
                 for (var i = 0; i < this.abertos.length; i++) {
                     this.abertos[i].ativo = false
                 }
+                for (var i = 0; i < this.explorer.length; i++) {
+                    this.explorer[i].ativo = false
+                }
                 this.abertos[arq.id].ativo = true
+                this.explorer[arq.id].ativo = true
             }
         },
         close(aberto) {
@@ -106,18 +110,24 @@ var app = new Vue({
             localStorage.abertos = JSON.stringify(this.abertos)
         },
         criarArquivoNovo() {
-            if (this.newFileName.length >= 3) {
-                this.explorer.push({
-                    'name': this.newFileName,
-                    "icon": "fas fa-code",
-                    "text": "Escreve seu código aqui",
-                    "ativo": false
-                })
-                this.newFile = false
-                this.modal = false
-                localStorage.explorer = JSON.stringify(this.explorer)
-                localStorage.ativo = JSON.stringify(this.ativo)
-                localStorage.abertos = JSON.stringify(this.abertos)
+           if(this.explorer.find((explorer) => explorer.name === this.newFileName)){
+             console.log("Já existe");
+           }
+            else{
+              if (this.newFileName.length >= 3) {
+                  this.explorer.push({
+                      'name': this.newFileName,
+                      "icon": "fas fa-code",
+                      "text": "Escreve seu código aqui",
+                      "ativo": false
+                  })
+                  this.newFile = false
+                  this.modal = false
+                  this.newFileName = ""
+                  localStorage.explorer = JSON.stringify(this.explorer)
+                  localStorage.ativo = JSON.stringify(this.ativo)
+                  localStorage.abertos = JSON.stringify(this.abertos)
+             }
             }
         },
         cancelNewFile() {
