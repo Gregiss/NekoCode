@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>A Pen by  Alexandre Silva</title>
+  <title>NekoCode</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.8/spectre.min.css'><link rel="stylesheet" href="./style.css">
 
@@ -21,11 +21,9 @@
   <div class="left_two">
     <h1>{{ where }}</h1>
     <div class="explorer" v-if="where == 'Explorer'">
+      <a @click="novoArquivo"> + </a>
       <div class="line"></div>
-      <li v-for="arq in explorer" style="color: #fff" v-if="abertos.find((abertos) => abertos.name === arq.name)">
-        <i v-bind:class="arq.icon" style="color: #fff"></i>  <span>{{ arq.name }}</span>
-      </li>
-      <li v-for="arq in explorer" v-else="" @click="abrir(arq)">
+      <li v-for="arq in explorer" @click="abrir(arq)">
         <i v-bind:class="arq.icon"></i>  <span>{{ arq.name }}</span>
       </li>
     </div>
@@ -33,15 +31,28 @@
   
   <div class="center">
     <div class="tabs">
-      <a v-for="aberto in abertos" style="color: #fff" v-if="abertos.find((aberto) => aberto.name === ativo.name)"><i v-bind:class="aberto.icon" style="color: #fff"></i>  <span>{{ aberto.name }}</span> <div class="close"><i class="fas fa-times" @click="close(aberto)"></i></div></a>
-      <a v-for="aberto in abertos" v-else=""><i v-bind:class="aberto.icon"></i>  <span>{{ aberto.name }}</span> <div class="close"><i class="fas fa-times" @click="close(aberto)"></i></div> </a>
+      <a v-for="aberto in abertos" style="color: #fff" @click="openFile(aberto)"><i v-bind:class="aberto.icon"></i>  <span>{{ aberto.name }}</span> <div class="close"><i class="fas fa-times" @click="close(aberto)"></i></div></a>
     </div>
     
     <div class="code" v-bind:class="ativo.name" v-on:keyup="keyHandler($event)" v-if="abertos.find((aberto) => aberto.name === ativo.name)">
-      <code>{{ ativo.text }}</code>
+      <code @keyup.ctrl.65="selectAll" style="rgba(255, 255, 255, 0.68) !important" v-if="selectAllFunction">{{ ativo.text }}</code>
+      <code @keyup.ctrl.65="selectAll" v-else="">{{ ativo.text }}</code>
+      <div class="toolbar">
+        <div class="right">Ln {{ ativo.text.length }}</div>
+      </div>
     </div>
     
   </div>
+
+  <div class="popup" v-if="modal">
+    <div class="message" v-if="newFile">
+    <h1>Criando novo arquivo</h1>
+    <input v-model="newFileName" placeholder="Nome do arquivo">
+    <button type="button" @click="criarArquivoNovo" class="btn btn-primary">Criar novo arquivo</button>
+    <a href="#" @click="cancelNewFile" class="btn btn-primary active" role="button">Cancelar</a>
+    </div>
+  </div>
+
 </div>
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js'></script><script  src="./script.js"></script>
