@@ -1,6 +1,6 @@
 String.prototype.isABC = function() {
     var a = this,
-        ab = "abcdefghijklmnopqrstuvwxyz,.[] {}1234567890´''àáóòê",
+        ab = "abcdefghijklmnopqrstuvwxyz,.[] {}1234567890´''àáóòê()",
         ab2 = ab.toUpperCase(),
         ab3 = '"":´><';
     for (i = 0; i < ab.length; i++) { if (ab.charAt(i) == a || ab2.charAt(i) == a || ab3.charAt(i) == a) { return true; } }
