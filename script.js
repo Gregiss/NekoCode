@@ -39,8 +39,10 @@ var app = new Vue({
                 this.editar(e.key)
             }
             if (e.key == 'Backspace') {
+              if(!this.modal){
                 var novotexto = this.ativo.text.substring(0, (this.ativo.text.length - 1));
                 this.ativo.text = novotexto
+              }
             }
         });
     },
@@ -56,9 +58,11 @@ var app = new Vue({
     },
     methods: {
         editar(letter) {
+          if(!this.modal){
             this.ativo.text += letter
             localStorage.explorer = JSON.stringify(this.explorer)
             localStorage.ativo = JSON.stringify(this.ativo)
+          }
         },
         acessar(app) {
             this.where = app
@@ -73,7 +77,6 @@ var app = new Vue({
                     this.explorer[i].ativo = false
                 }
                 this.abertos[arq.id].ativo = true
-                this.explorer[arq.id].ativo = true
             } else {
                 this.abertos.push(arq)
                 this.ativo = arq
@@ -86,14 +89,15 @@ var app = new Vue({
                 for (var i = 0; i < this.explorer.length; i++) {
                     this.explorer[i].ativo = false
                 }
-                this.abertos[arq.id].ativo = true
-                this.explorer[arq.id].ativo = true
+                var indice = this.abertos.find((aberto) => aberto.name === arq.name)
+                if(indice){
+                var index = this.abertos.indexOf(indice)
+                console.log(index)
+                this.abertos[index].ativo = true
+                }
             }
         },
         close(aberto) {
-            var arqa = this.abertos.indexOf(aberto)
-            console.log(arqa)
-            this.explorer[arqa].ativo = false
             var index = this.abertos.indexOf(aberto)
             if (index !== -1) this.abertos.splice(index, 1);
             this.ativo = {}
@@ -138,21 +142,21 @@ var app = new Vue({
             localStorage.abertos = JSON.stringify(this.abertos)
         },
         openFile(arq) {
+            var indice = this.abertos.find((aberto) => aberto.name === arq.name)
+            if(indice){
+            var index = this.abertos.indexOf(indice)
+            console.log(index)
             for (var i = 0; i < this.abertos.length; i++) {
                 this.abertos[i].ativo = false
             }
-            for (var i = 0; i < this.explorer.length; i++) {
-                this.explorer[i].ativo = false
-            }
-            this.abertos[arq.id].ativo = true
-            this.explorer[arq.id].ativo = true
+            this.abertos[index].ativo = true
             this.ativo = arq
-            var index = this.abertos.indexOf(arq)
             this.ativo.id = index;
             this.arquivoId = index
             localStorage.explorer = JSON.stringify(this.explorer)
             localStorage.ativo = JSON.stringify(this.ativo)
             localStorage.abertos = JSON.stringify(this.abertos)
+            }
         }
     }
 });
