@@ -67,10 +67,14 @@ var app = new Vue({
             this.ativo.text += letter
             localStorage.explorer = JSON.stringify(this.explorer)
             localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
           }
         },
         acessar(app) {
             this.where = app
+            localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         },
         abrir(arq) {
             if (this.abertos.find((aberto) => aberto.name === arq.name)) {
@@ -101,11 +105,17 @@ var app = new Vue({
                 this.abertos[index].ativo = true
                 }
             }
+            localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         },
         close(aberto) {
             var index = this.abertos.indexOf(aberto)
             if (index !== -1) this.abertos.splice(index, 1);
             this.ativo = {}
+            localStorage.explorer = JSON.stringify(this.explorer)
+            localStorage.ativo = JSON.stringify(this.ativo)
+            localStorage.abertos = JSON.stringify(this.abertos)
         },
         selectAll() {
             this.selectAllFunction = true
