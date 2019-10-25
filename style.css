@@ -217,3 +217,13 @@ button {
 .ativo i {
     color: #fff;
 }
+
+.find input{
+    background: transparent;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.find input::placeholder{
+  color: #fff;
+}

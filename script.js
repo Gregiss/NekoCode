@@ -12,10 +12,10 @@ var app = new Vue({
     data: {
         reg: /[a-zA-Z\u00C0-\u00FF ]+/i,
         left_a: [
-            { "name": "Explorer", "icon": "far fa-copy" },
-            { "name": "Search", "icon": "fas fa-search" }
+            { "name": "Explorar", "icon": "far fa-copy" },
+            { "name": "Buscar", "icon": "fas fa-search" }
         ],
-        where: "Explorer",
+        where: "Explorar",
         explorer: [{
             'name': "readme",
             "icon": "fab fa-readme",
@@ -28,10 +28,12 @@ var app = new Vue({
         newFile: false,
         newFileName: null,
         modal: false,
-        arquivoId: 0
+        arquivoId: 0,
+        search: false
     },
     created() {
         window.addEventListener('keydown', (e) => {
+          if(!this.search){
             if (e.key.isABC()) {
                 this.editar(e.key)
             }
@@ -44,6 +46,7 @@ var app = new Vue({
                 this.ativo.text = novotexto
               }
             }
+          }
         });
     },
     mounted() {
@@ -157,6 +160,12 @@ var app = new Vue({
             localStorage.ativo = JSON.stringify(this.ativo)
             localStorage.abertos = JSON.stringify(this.abertos)
             }
-        }
+        },
+      searchOk(){
+        this.search = true
+      },
+      searchFail(){
+        this.search = false
+      }
     }
 });
