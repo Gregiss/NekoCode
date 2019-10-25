@@ -29,7 +29,9 @@ var app = new Vue({
         newFileName: null,
         modal: false,
         arquivoId: 0,
-        search: false
+        search: false,
+        searchTerm: null,
+        searchItems: []
     },
     created() {
         window.addEventListener('keydown', (e) => {
@@ -162,7 +164,18 @@ var app = new Vue({
             }
         },
       searchOk(){
+        var index = -1
         this.search = true
+        var indice = this.explorer.find((arquivos) => arquivos.name.search(this.searchTerm))
+        index = this.explorer.indexOf(indice)
+        console.log(index)
+        if(index >= 0){
+        if(this.searchItems.find((itens) => itens === indice)){
+            return false
+        } else{
+            this.searchItems.push(indice)
+        }
+        }
       },
       searchFail(){
         this.search = false

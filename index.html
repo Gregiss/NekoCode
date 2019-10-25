@@ -28,7 +28,10 @@
       </li>
     </div>
     <div class="find" v-if="where == 'Buscar'">
-      <input type="text" placeholder="Pesquise" v-on:keyup="searchOk" @blur="searchFail" @click="searchOk">
+      <input type="text" v-model="searchTerm" placeholder="Pesquise" v-on:keyup="searchOk" @blur="searchFail" @click="searchOk">
+      <li v-for="arq in searchItems" @click="abrir(arq)" v-bind:class="{ ativo: abertos.find((aberto) => aberto.name === arq.name) }" >
+        <i v-bind:class="arq.icon"></i>  <span>{{ arq.name }}</span>
+      </li>
     </div>
   </div>
   
